@@ -1,38 +1,25 @@
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
-var textAreaEl = $('#textarea');
-var pastEl = $('past');
-var presentEl = $('present');
-var futureEl = $('future');
-
-// variables that grab from from html. 
+// Displays current date and time. Need to get hours from 12 to 24 hrs
 
 var today = dayjs();
 $(currentDay).text(today.format('MMM D, YYYY, h:mm'));
 
-// Displays current date and time. Need to get hours from 12 to 24 hrs
 
-$(function (hour) {
-  var hourTimes = [
-    '9',
-    '10',
-    '11',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
-    '17', 
-  ];
-  var hours = new date().getHours();
-  
-  if (hourTimes <= hours) {
-    $('hour')
-
-  }
-// try to make if statement that changes time block to corresponding color. 
-
+$(function (){
+  var currentTime = dayjs().hour();
+  $('.time-block').each(function(){
+    var hourEl = $(this).attr('id').split('-')[1]
+    if (currentTime == hourEl) {
+      $(this).addClass('present')
+    } else if (currentTime > hourEl) {
+      $(this).addClass('past');
+    } else if (currentTime < hourEl) {
+      $(this).addClass('future');
+    } 
+  });
+});
 
  textAreaEl.on('click', function(event) {
   if($(event.target).hasClass("saveBtn")){
@@ -41,9 +28,18 @@ $(function (hour) {
  })
 
 // Save input from text area into console log 
-
-});
-
+var saved = [];
+$('.saveBtn').on('click', function(){
+  
+  for (var i = 0; i < 9 ;i++) {
+    var saved = $('#container').children().eq(i).children().eq(1).val();
+    
+    saved.push(saved);
+    localStorage.setItem('saved',JSON.stringify(saved));
+  }
+  
+  
+})
 
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
